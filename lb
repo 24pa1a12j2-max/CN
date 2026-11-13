@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+int main() {
+    int bucketSize = 10;
+    int outputRate = 3;
+    int packets, remaining = 0;
+    int size, sent;
+
+    printf("LEAKY BUCKET ALGORITHM\n");
+
+    printf("Enter number of packets: ");
+    scanf("%d", &packets);
+
+    for (int i = 1; i <= packets; i++) {
+
+        printf("\nEnter packet size: ");
+        scanf("%d", &size);
+
+        printf("\nPacket %d:\n", i);
+
+        if (size <= 0) {
+            printf("Invalid packet size\n");
+        }
+        else if (remaining + size <= bucketSize) {
+            remaining += size;
+            printf("Packet accepted\n");
+        }
+        else {
+            printf("Packet dropped\n");
+        }
+
+        if (remaining > 0) {
+            sent = (remaining < outputRate) ? remaining : outputRate;
+            remaining = remaining - sent;
+
+            printf("Packets sent: %d\n", sent);
+        }
+        else {
+            printf("Packets sent: 0\n");
+        }
+
+        printf("Remaining packets: %d\n", remaining);
+    }
+
+    // Send remaining packets
+    while (remaining > 0) {
+        sent = (remaining < outputRate) ? remaining : outputRate;
+        remaining -= sent;
+
+        printf("\nPackets sent: %d\n", sent);
+        printf("Remaining packets: %d\n", remaining);
+    }
+
+    printf("\nTransmission completed.\n");
+
+    return 0;
+}
